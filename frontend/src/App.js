@@ -1,53 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './App.css';
+import Button from './components/Button.jsx';
+import TransactionTable from './components/Transactiontable.jsx';
 
-function App() {
+export default function App() {
   const [transactions, setTransactions] = useState([]);
+  const [loading, setLoading] = useState(true); // สร้างสถานะ Loading
 
-  // ฟังก์ชันสำหรับดึงข้อมูลจาก Spring Boot
-  const fetchTransactions = () => {
+  useEffect(() => {
     axios.get('http://localhost:8080/api/transactions')
       .then(response => {
         setTransactions(response.data);
+        setLoading(false); // โหลดเสร็จแล้ว ปิด Loading
       })
       .catch(error => {
-        console.error("Error fetching data:", error);
+        setLoading(false);
       });
-  };
-
-  useEffect(() => {
-    fetchTransactions();
   }, []);
 
+  if (loading) return <h2>Loading...</h2>; 
+
   return (
-    <div style={{ padding: '40px', fontFamily: 'Arial' }}>
+    <div>
       <h1>Personal Finance Tracker</h1>
-      
-      <h3>รายการธุรกรรม</h3>
       {transactions.length === 0 ? (
-        <p>ไม่มีข้อมูลการทำรายการในขณะนี้</p>
+        <p>No transactions found. Try adding some!</p> 
       ) : (
-        <table border="1" style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ backgroundColor: '#f2f2f2' }}>
-              <th style={{ padding: '10px' }}>รายละเอียด</th>
-              <th style={{ padding: '10px' }}>จำนวนเงิน</th>
-              <th style={{ padding: '10px' }}>ประเภท</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.map((t) => (
-              <tr key={t.id}>
-                <td style={{ padding: '10px' }}>{t.description}</td>
-                <td style={{ padding: '10px' }}>{t.amount.toLocaleString()} บาท</td>
-                <td style={{ padding: '10px' }}>{t.type}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <TransactionTable data={transactions} />
       )}
     </div>
   );
 }
-
-export default App;

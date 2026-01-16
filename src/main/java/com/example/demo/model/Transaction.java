@@ -1,22 +1,22 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*; // ต้องมีเพื่อใช้ @Entity, @Id
+import jakarta.persistence.*; // use jakarta.persistence for JPA annotations
 import java.util.Date;
 
-@Entity // 1. เพิ่มตัวนี้เพื่อให้ Spring รู้ว่านี่คือตารางในฐานข้อมูล
-@Table(name = "transactions") // 2. ตั้งชื่อตารางใน Database
+@Entity 
+@Table(name = "transactions") // name of the table in the database
 public class Transaction {
 
-    @Id // 3. กำหนดให้เป็น Primary Key
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 4. ให้ระบบรัน ID (1, 2, 3...) อัตโนมัติ
-    private Long id; // แนะนำให้ใช้ Long สำหรับ ID ในฐานข้อมูลครับ
+    @Id // set primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto-generate ID values
+    private Long id; // change transactionId to id
 
     private double amount;
     private Date date;
     private String description;
     private String type;
 
-    // 5. สำคัญมาก: ต้องมี Constructor ว่าง (No-Args) สำหรับ JPA
+    // Constructors
     public Transaction() {
     }
 
@@ -27,7 +27,7 @@ public class Transaction {
         this.type = type;
     }
 
-    // Getter และ Setter ของคุณ (ใช้ของเดิมได้เลย แต่เปลี่ยนชื่อจาก transactionId เป็น id ให้ตรงกัน)
+     // Getters and Setters
     public Long getId() {
         return id;
     }
