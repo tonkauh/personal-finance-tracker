@@ -1,29 +1,33 @@
-function TransactionTable({ data }) {
+import React from 'react'; 
+
+function TransactionTable({ data, onDelete }) {
   return (
-    <table border="1" style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
+    <table border="1" style={{ width: '100%', borderCollapse: 'collapse' }}>
       <thead>
         <tr style={{ backgroundColor: '#f2f2f2' }}>
-          <th style={{ padding: '10px' }}>Description</th> 
-          <th style={{ padding: '10px' }}>Amount</th>      
-          <th style={{ padding: '10px' }}>Type</th>       
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Action</th> {/* New Column */}
         </tr>
       </thead>
       <tbody>
-        {data && data.length > 0 ? (
-          data.map((t) => (
-            <tr key={t.id}>
-              <td style={{ padding: '10px' }}>{t.description}</td>
-              <td style={{ padding: '10px' }}>{t.amount.toLocaleString()} THB</td>
-              <td style={{ padding: '10px' }}>{t.type}</td>
-            </tr>
-          ))
-        ) : (
-          <tr>
-            <td colSpan="3" style={{ textAlign: 'center', padding: '20px' }}>
-              No transactions found.
+        {data.map((t) => (
+          <tr key={t.id}>
+            <td>{t.description}</td>
+            <td>{t.amount.toLocaleString()} THB</td>
+            <td>{t.type}</td>
+            <td style={{ textAlign: 'center' }}>
+              {/* Delete Button calling the delete function */}
+              <button 
+                onClick={() => onDelete(t.id)} 
+                style={{ color: 'white', backgroundColor: '#ff5252', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}
+              >
+                Delete
+              </button>
             </td>
           </tr>
-        )}
+        ))}
       </tbody>
     </table>
   );

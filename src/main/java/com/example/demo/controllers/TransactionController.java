@@ -26,4 +26,9 @@ public class TransactionController {
     public Transaction create(@RequestBody Transaction transaction) {
         return repository.save(transaction);
     }
+    @DeleteMapping("/{id}")
+    @CrossOrigin(origins = "http://localhost:3000") 
+    public void deleteTransaction(@PathVariable Long id) {
+    repository.deleteById(id);
+}
 }
