@@ -198,20 +198,20 @@ export default function App() {
     <div className="app-container">
       <Sidebar activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
       <div className="main-content">
-        <div className="page-header">
-          <h1 className="page-title">
-            {activeMenu === 'Dashboard' && 'Personal Finance Dashboard'}
-            {activeMenu === 'Transactions' && 'Transactions'}
-            {activeMenu === 'Reports' && 'Financial Reports'}
-            {activeMenu === 'Settings' && 'Settings'}
-          </h1>
-          <p className="page-description">
-            {activeMenu === 'Dashboard' && 'Track your income, expenses, and savings all in one place'}
-            {activeMenu === 'Transactions' && 'View and manage all your transactions'}
-            {activeMenu === 'Reports' && 'Visualize your financial data with charts and graphs'}
-            {activeMenu === 'Settings' && 'Customize your finance tracker preferences'}
-          </p>
-        </div>
+        {activeMenu !== 'Dashboard' && (
+          <div className="page-header">
+            <h1 className="page-title">
+              {activeMenu === 'Transactions' && 'Transactions'}
+              {activeMenu === 'Reports' && 'Financial Reports'}
+              {activeMenu === 'Settings' && 'Settings'}
+            </h1>
+            <p className="page-description">
+              {activeMenu === 'Transactions' && 'View and manage all your transactions'}
+              {activeMenu === 'Reports' && 'Visualize your financial data with charts and graphs'}
+              {activeMenu === 'Settings' && 'Customize your finance tracker preferences'}
+            </p>
+          </div>
+        )}
 
         {renderContent()}
       </div>

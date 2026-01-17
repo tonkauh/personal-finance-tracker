@@ -31,7 +31,10 @@ function Sidebar({ activeMenu, setActiveMenu }) {
               </button>
             </li>
             <li>
-              <button className="sidebar-nav-item">
+              <button 
+                className={`sidebar-nav-item ${activeMenu === 'Transactions' ? 'active' : ''}`}
+                onClick={() => handleMenuClick('Transactions')}
+              >
                 {/* Refresh/Reload Icon */}
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M15.5 4.5C14.7177 3.52417 13.5992 2.85723 12.3431 2.63074C11.087 2.40425 9.78569 2.63408 8.67954 3.27971C7.57338 3.92535 6.73735 4.94414 6.321 6.147" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -43,7 +46,10 @@ function Sidebar({ activeMenu, setActiveMenu }) {
               </button>
             </li>
             <li>
-              <button className="sidebar-nav-item">
+              <button 
+                className={`sidebar-nav-item ${activeMenu === 'Reports' ? 'active' : ''}`}
+                onClick={() => handleMenuClick('Reports')}
+              >
                 {/* External Link Icon */}
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M12 3H17C17.5523 3 18 3.44772 18 4V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -54,7 +60,10 @@ function Sidebar({ activeMenu, setActiveMenu }) {
               </button>
             </li>
             <li>
-              <button className="sidebar-nav-item">
+              <button 
+                className={`sidebar-nav-item ${activeMenu === 'Settings' ? 'active' : ''}`}
+                onClick={() => handleMenuClick('Settings')}
+              >
                 {/* Equalizer/Sliders Icon */}
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <line x1="3" y1="5" x2="17" y2="5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
