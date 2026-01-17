@@ -72,10 +72,10 @@ function Chart({ transactions }) {
   });
 
   return (
-    <div className="chart-container">
+    <div className="chart-container" style={{ width: '100%', boxSizing: 'border-box' }}>
       <h3 className="chart-title">Financial Overview</h3>
       <div className="chart-content">
-        <div className="pie-chart-wrapper">
+        <div className="pie-chart-wrapper" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px' }}>
           <div className="pie-chart-container">
             <svg className="pie-chart" viewBox="0 0 200 200">
               {/* Segments */}

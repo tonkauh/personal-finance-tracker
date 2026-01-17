@@ -2,7 +2,8 @@ import React from 'react';
 
 function TransactionTable({ data, onDelete, onEdit }) {
   return (
-    <table className="transaction-table">
+    <div style={{ width: '100%', overflowX: 'auto' }}>
+      <table className="transaction-table" style={{ width: '100%' }}>
       <thead>
         <tr>
           <th>Description</th>
@@ -57,6 +58,7 @@ function TransactionTable({ data, onDelete, onEdit }) {
         )}
       </tbody>
     </table>
+    </div>
   );
 }
 export default TransactionTable;

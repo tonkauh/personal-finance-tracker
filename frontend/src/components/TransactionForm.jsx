@@ -6,6 +6,8 @@ function TransactionForm({ onTransactionAdded, editData, setEditData, onClose })
   const [amount, setAmount] = useState('');
   const [type, setType] = useState('Expense');
   const [category, setCategory] = useState('Food');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   // Populate form fields when switching to edit mode
   useEffect(() => {
@@ -17,8 +19,11 @@ function TransactionForm({ onTransactionAdded, editData, setEditData, onClose })
     }
   }, [editData]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
     const payload = { 
       description, 
       amount: parseFloat(amount), 
@@ -26,15 +31,21 @@ function TransactionForm({ onTransactionAdded, editData, setEditData, onClose })
       category: type === 'Expense' ? category : null
     };
 
-    // Toggle between Create and Update operations
-    if (editData) {
-      // Execute PUT request for existing records
-      axios.put(`http://localhost:8080/api/transactions/${editData.id}`, payload)
-        .then(() => finalizeSubmission());
-    } else {
-      // Execute POST request for new entries
-      axios.post('http://localhost:8080/api/transactions', payload)
-        .then(() => finalizeSubmission());
+    try {
+      // Toggle between Create and Update operations
+      if (editData) {
+        // Execute PUT request for existing records
+        await axios.put(`http://localhost:8080/api/transactions/${editData.id}`, payload);
+      } else {
+        // Execute POST request for new entries
+        await axios.post('http://localhost:8080/api/transactions', payload);
+      }
+      finalizeSubmission();
+    } catch (err) {
+      console.error('Error saving transaction:', err);
+      setError('Failed to save transaction. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -54,7 +65,7 @@ function TransactionForm({ onTransactionAdded, editData, setEditData, onClose })
   return (
     <>
       <div className="transaction-form-overlay" onClick={onClose}></div>
-      <div className="transaction-form-container floating-form">
+      <div className="transaction-form-container floating-form" style={{ width: '90%', maxWidth: '500px', maxHeight: '90vh', overflowY: 'auto' }}>
         <div className="form-header">
           <h4 className="transaction-form-title">
             {editData ? "Update Transaction" : "New Transaction"}
@@ -68,6 +79,7 @@ function TransactionForm({ onTransactionAdded, editData, setEditData, onClose })
           </button>
         </div>
       <form onSubmit={handleSubmit} className="transaction-form">
+        {error && <div className="form-error" style={{ color: '#ff4d4d', marginBottom: '1rem' }}>{error}</div>}
         <div className="form-group">
           <label className="form-label">Description</label>
           <input 
@@ -123,14 +135,16 @@ function TransactionForm({ onTransactionAdded, editData, setEditData, onClose })
           <button 
             className="btn btn-primary" 
             type="submit"
+            disabled={isLoading}
           >
-            {editData ? "Apply Changes" : "Create Transaction"}
+            {isLoading ? "Saving..." : (editData ? "Apply Changes" : "Create Transaction")}
           </button>
           {editData && (
             <button 
               className="btn btn-secondary" 
               type="button" 
               onClick={() => finalizeSubmission()}
+              disabled={isLoading}
             >
               Cancel
             </button>

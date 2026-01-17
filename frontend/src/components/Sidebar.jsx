@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Sidebar({ activeMenu, setActiveMenu }) {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
   };
@@ -8,6 +16,7 @@ function Sidebar({ activeMenu, setActiveMenu }) {
   return (
     <>
       {/* Desktop Sidebar */}
+      {!isMobile && (
       <div className="sidebar">
         <div className="sidebar-header">
           <h2 className="sidebar-title">Finance Tracker</h2>
@@ -79,12 +88,29 @@ function Sidebar({ activeMenu, setActiveMenu }) {
           </ul>
         </nav>
       </div>
+      )}
 
       {/* Mobile Bottom Navigation */}
-      <div className="mobile-bottom-nav">
+      {isMobile && (
+      <div className="mobile-bottom-nav" style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        width: '100%',
+        height: '65px',
+        backgroundColor: '#1e1e1e',
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        zIndex: 1000,
+        borderTop: '1px solid #333',
+        paddingBottom: 'env(safe-area-inset-bottom)',
+        boxSizing: 'border-box'
+      }}>
         <button 
           className={`mobile-nav-item ${activeMenu === 'Dashboard' ? 'active' : ''}`}
           onClick={() => handleMenuClick('Dashboard')}
+          style={{ flex: '1 1 0px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', padding: 0, height: '100%' }}
         >
           {/* Window/Panel Icon */}
           <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -97,6 +123,7 @@ function Sidebar({ activeMenu, setActiveMenu }) {
         <button 
           className={`mobile-nav-item ${activeMenu === 'Transactions' ? 'active' : ''}`}
           onClick={() => handleMenuClick('Transactions')}
+          style={{ flex: '1 1 0px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', padding: 0, height: '100%' }}
         >
           <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M15.5 4.5C14.7177 3.52417 13.5992 2.85723 12.3431 2.63074C11.087 2.40425 9.78569 2.63408 8.67954 3.27971C7.57338 3.92535 6.73735 4.94414 6.321 6.147" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -108,6 +135,7 @@ function Sidebar({ activeMenu, setActiveMenu }) {
         <button 
           className={`mobile-nav-item ${activeMenu === 'Reports' ? 'active' : ''}`}
           onClick={() => handleMenuClick('Reports')}
+          style={{ flex: '1 1 0px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', padding: 0, height: '100%' }}
         >
           <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 3H17C17.5523 3 18 3.44772 18 4V9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -118,6 +146,7 @@ function Sidebar({ activeMenu, setActiveMenu }) {
         <button 
           className={`mobile-nav-item ${activeMenu === 'Settings' ? 'active' : ''}`}
           onClick={() => handleMenuClick('Settings')}
+          style={{ flex: '1 1 0px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', padding: 0, height: '100%' }}
         >
           <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <line x1="3" y1="5" x2="17" y2="5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
@@ -129,6 +158,7 @@ function Sidebar({ activeMenu, setActiveMenu }) {
           </svg>
         </button>
       </div>
+      )}
     </>
   );
 }
