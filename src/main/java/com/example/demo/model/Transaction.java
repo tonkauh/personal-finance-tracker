@@ -15,6 +15,7 @@ public class Transaction {
     private Date date;
     private String description;
     private String type;
+    private String category;
 
     // Constructors
     public Transaction() {
@@ -25,6 +26,14 @@ public class Transaction {
         this.amount = amount;
         this.date = date;
         this.type = type;
+    }
+
+    public Transaction(String description, double amount, Date date, String type, String category) {
+        this.description = description;
+        this.amount = amount;
+        this.date = date;
+        this.type = type;
+        this.category = category;
     }
 
      // Getters and Setters
@@ -66,5 +75,13 @@ public class Transaction {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

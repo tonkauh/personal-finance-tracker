@@ -26,9 +26,17 @@ public class TransactionController {
     public Transaction create(@RequestBody Transaction transaction) {
         return repository.save(transaction);
     }
+
+    // feature: update an existing transaction (PUT)
+    @PutMapping("/{id}")
+    public Transaction updateTransaction(@PathVariable Long id, @RequestBody Transaction transaction) {
+        transaction.setId(id);
+        return repository.save(transaction);
+    }
+
     @DeleteMapping("/{id}")
     @CrossOrigin(origins = "http://localhost:3000") 
     public void deleteTransaction(@PathVariable Long id) {
-    repository.deleteById(id);
-}
+        repository.deleteById(id);
+    }
 }
