@@ -19,6 +19,30 @@ export default function App() {
     localStorage.setItem('app_currency', currency);
   }, [currency]);
 
+  // Set dynamic favicon and title to match the logo
+  useEffect(() => {
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <defs>
+          <linearGradient id="icon-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#38ef7d"/>
+            <stop offset="100%" stop-color="#11998e"/>
+          </linearGradient>
+        </defs>
+        <rect width="24" height="24" rx="6" fill="url(#icon-grad)"/>
+        <g transform="translate(3.5, 3.5) scale(0.7)">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="17 6 23 6 23 12" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+      </svg>`;
+    const link = document.querySelector("link[rel~='icon']") || document.createElement('link');
+    link.type = 'image/svg+xml';
+    link.rel = 'icon';
+    link.href = `data:image/svg+xml;base64,${btoa(svg)}`;
+    document.head.appendChild(link);
+    document.title = "FnTracker";
+  }, []);
+
   // Synchronize local state with backend database
   const fetchTransactions = () => {
     axios.get('http://localhost:8080/api/transactions')
@@ -203,6 +227,18 @@ export default function App() {
     <div className="app-container">
       <Sidebar activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
       
+      <div className="mobile-header">
+        <div className="logo-container">
+          <div className="logo-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+              <polyline points="17 6 23 6 23 12"></polyline>
+            </svg>
+          </div>
+          <h1 className="sidebar-title">FnTracker</h1>
+        </div>
+      </div>
+
       <div className="mobile-bottom-nav">
         <button 
           className={`mobile-nav-item ${activeMenu === 'Dashboard' ? 'active' : ''}`}
