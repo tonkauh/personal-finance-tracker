@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function Settings({ currency, setCurrency }) {
+  const [showToast, setShowToast] = useState(false);
+
   const handleSave = () => {
     // In a real app, you might save other settings to a backend here
-    alert('Settings saved successfully!');
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
   };
 
   return (
@@ -54,6 +57,13 @@ function Settings({ currency, setCurrency }) {
             Save Changes
           </button>
         </div>
+        
+        {showToast && (
+          <div className="toast-notification">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Settings saved successfully!
+          </div>
+        )}
       </div>
     </div>
   );

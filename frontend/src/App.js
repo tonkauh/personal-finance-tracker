@@ -6,6 +6,7 @@ import TransactionForm from './components/TransactionForm';
 import TransactionTable from './components/TransactionTable';
 import Chart from './components/Chart';
 import Settings from './components/Settings';
+import ConfirmationModal from './components/ConfirmationModal';
 
 export default function App() {
   const [transactions, setTransactions] = useState([]);
@@ -14,6 +15,7 @@ export default function App() {
   const [showForm, setShowForm] = useState(false); // Controls form visibility
   const [activeMenu, setActiveMenu] = useState('Dashboard'); // Tracks active menu item
   const [currency, setCurrency] = useState(() => localStorage.getItem('app_currency') || 'THB');
+  const [deleteModal, setDeleteModal] = useState({ show: false, id: null });
 
   useEffect(() => {
     localStorage.setItem('app_currency', currency);
@@ -53,11 +55,18 @@ export default function App() {
   useEffect(() => { fetchTransactions(); }, []);
 
   // Remove record by ID and refresh the list
-  const deleteTransaction = (id) => {
-    if (window.confirm("Are you sure you want to delete this record?")) {
-      axios.delete(`http://localhost:8080/api/transactions/${id}`)
-        .then(() => fetchTransactions())
-        .catch(err => console.error("Deletetion failed:", err));
+  const requestDelete = (id) => {
+    setDeleteModal({ show: true, id });
+  };
+
+  const confirmDelete = () => {
+    if (deleteModal.id) {
+      axios.delete(`http://localhost:8080/api/transactions/${deleteModal.id}`)
+        .then(() => {
+          fetchTransactions();
+          setDeleteModal({ show: false, id: null });
+        })
+        .catch(err => console.error("Deletion failed:", err));
     }
   };
 
@@ -153,7 +162,7 @@ export default function App() {
                 </div>
                 <TransactionTable 
                   data={filteredData} 
-                  onDelete={deleteTransaction} 
+                  onDelete={requestDelete} 
                   onEdit={(item) => setEditData(item)}
                 />
               </div>
@@ -201,7 +210,7 @@ export default function App() {
               </div>
               <TransactionTable 
                 data={filteredData} 
-                onDelete={deleteTransaction} 
+                onDelete={requestDelete} 
                 onEdit={(item) => setEditData(item)}
               />
             </div>
@@ -283,6 +292,14 @@ export default function App() {
 
         {renderContent()}
       </div>
+
+      <ConfirmationModal 
+        isOpen={deleteModal.show}
+        onClose={() => setDeleteModal({ show: false, id: null })}
+        onConfirm={confirmDelete}
+        title="Delete Transaction"
+        message="Are you sure you want to delete this record? This action cannot be undone."
+      />
     </div>
   );
 }
