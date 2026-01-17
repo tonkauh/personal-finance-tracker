@@ -1,14 +1,14 @@
-import React from 'react'; 
+import React from 'react';
 
-function TransactionTable({ data, onDelete }) {
+function TransactionTable({ data, onDelete, onEdit }) {
   return (
-    <table border="1" style={{ width: '100%', borderCollapse: 'collapse' }}>
+    <table border="1" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
       <thead>
-        <tr style={{ backgroundColor: '#f2f2f2' }}>
+        <tr style={{ backgroundColor: '#f9f9f9' }}>
           <th>Description</th>
           <th>Amount</th>
-          <th>Type</th>
-          <th>Action</th> {/* New Column */}
+          <th>Category</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -17,14 +17,11 @@ function TransactionTable({ data, onDelete }) {
             <td>{t.description}</td>
             <td>{t.amount.toLocaleString()} THB</td>
             <td>{t.type}</td>
-            <td style={{ textAlign: 'center' }}>
-              {/* Delete Button calling the delete function */}
-              <button 
-                onClick={() => onDelete(t.id)} 
-                style={{ color: 'white', backgroundColor: '#ff5252', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}
-              >
-                Delete
-              </button>
+            <td>
+              {/* Trigger edit mode for the selected entry */}
+              <button onClick={() => onEdit(t)} style={{ marginRight: '8px' }}>Edit</button>
+              {/* Permanent removal of the record */}
+              <button onClick={() => onDelete(t.id)} style={{ color: '#d9534f' }}>Delete</button>
             </td>
           </tr>
         ))}
@@ -32,5 +29,4 @@ function TransactionTable({ data, onDelete }) {
     </table>
   );
 }
-
 export default TransactionTable;
