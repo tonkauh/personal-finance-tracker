@@ -3,7 +3,7 @@ import axios from 'axios';
 import './App.css';
 import Sidebar from './components/Sidebar';
 import TransactionForm from './components/TransactionForm';
-import TransactionTable from './components/TransactionTable';
+import TransactionTable from './components/Transactiontable';
 import Chart from './components/Chart';
 import Settings from './components/Settings';
 import ConfirmationModal from './components/ConfirmationModal';
